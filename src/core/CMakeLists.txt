@@ -209,7 +209,6 @@ set(HEADER_FILES
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidget.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactory.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetfactoryobject.h
-    ${IVW_INCLUDE_DIR}/inviwo/core/processors/processorwidgetobserver.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbar.h
     ${IVW_INCLUDE_DIR}/inviwo/core/processors/progressbarowner.h
     ${IVW_INCLUDE_DIR}/inviwo/core/properties/advancedmaterialproperty.h
@@ -533,7 +532,6 @@ set(SOURCE_FILES
     processors/processorwidget.cpp
     processors/processorwidgetfactory.cpp
     processors/processorwidgetfactoryobject.cpp
-    processors/processorwidgetobserver.cpp
     processors/progressbar.cpp
     processors/progressbarowner.cpp
     properties/advancedmaterialproperty.cpp
