@@ -33,9 +33,6 @@
 #include <inviwo/core/common/inviwo.h>
 #include <modules/opengl/shader/shader.h>
 #include <inviwo/core/datastructures/volume/volume.h>
-#include <modules/opengl/buffer/framebufferobject.h>
-#include <array>
-#include <string_view>
 
 namespace inviwo {
 /** \class VolumeNormalization
@@ -51,9 +48,10 @@ public:
     VolumeNormalization(Callback C) : VolumeNormalization() {
         shader_.onReload(C);
     }
+
     VolumeNormalization();
 
-    virtual ~VolumeNormalization() {}
+    virtual ~VolumeNormalization() = default;
 
     /**
      * Performs the normalization on the GPU.
@@ -71,7 +69,7 @@ public:
      * @param normalize Boolean value indicating whether or not the selected channel should be
      * normalized.
      */
-    void setNormalizeChannel(const size_t channel, const bool normalize);
+    void setNormalizeChannel(size_t channel, bool normalize);
 
     /**
      * Sets the channels that are to be normalized. In practice, this method in-/ejects shader
@@ -88,12 +86,8 @@ public:
 
 protected:
     Shader shader_;
-    FrameBufferObject fbo_;
 
 private:
-    const std::array<std::string_view, 4> defines_{
-        "NORMALIZE_CHANNEL_0", "NORMALIZE_CHANNEL_1", "NORMALIZE_CHANNEL_2",
-        "NORMALIZE_CHANNEL_3"};  ///< Some string_view indirection.
     bool needsCompilation_;
 };
 
