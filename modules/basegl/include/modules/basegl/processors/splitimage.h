@@ -36,11 +36,10 @@
 #include <inviwo/core/properties/ordinalproperty.h>
 #include <inviwo/core/properties/optionproperty.h>
 #include <inviwo/core/properties/boolcompositeproperty.h>
-#include <inviwo/core/properties/minmaxproperty.h>
 #include <inviwo/core/ports/imageport.h>
-#include <inviwo/core/interaction/pickingmapper.h>
 
-#include <modules/opengl/shader/shader.h>
+#include <modules/basegl/properties/splitterproperty.h>
+#include <modules/basegl/rendering/splitterrenderer.h>
 
 namespace inviwo {
 
@@ -70,9 +69,6 @@ class PickingEvent;
  */
 class IVW_MODULE_BASEGL_API SplitImage : public Processor {
 public:
-    enum class SplitDirection { Vertical, Horizontal };
-    enum class SplitterStyle { Handle, Divider, Invisible };
-
     SplitImage();
     virtual ~SplitImage() = default;
 
@@ -81,38 +77,16 @@ public:
     virtual const ProcessorInfo getProcessorInfo() const override;
     static const ProcessorInfo processorInfo_;
 
-protected:
-    virtual void initializeResources() override;
-
 private:
-    void drawHandlebar();
-    void updateMesh();
-    void updateTriMesh();
-    void handlePickingEvent(PickingEvent* e);
-
     ImageInport inport0_;
     ImageInport inport1_;
     ImageOutport outport_;
 
-    TemplateOptionProperty<SplitDirection> splitDirection_;
+    TemplateOptionProperty<splitter::Direction> splitDirection_;
     FloatProperty splitPosition_;
 
-    BoolCompositeProperty handlebarWidget_;
-    TemplateOptionProperty<SplitterStyle> style_;
-    FloatVec4Property color_;
-    FloatVec4Property bgColor_;
-    FloatVec4Property triColor_;
-    FloatProperty width_;
-    FloatProperty triSize_;
-
-    Shader shader_;
-    Shader triShader_;
-    std::shared_ptr<Mesh> lineMesh_;
-    std::shared_ptr<Mesh> triangleMesh_;
-
-    PickingMapper pickingMapper_;
-
-    bool hover_ = false;
+    SplitterProperty splitterSettings_;
+    SplitterRenderer renderer_;
 };
 
 }  // namespace inviwo

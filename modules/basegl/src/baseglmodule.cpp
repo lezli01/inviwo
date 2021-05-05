@@ -39,6 +39,7 @@
 #include <modules/basegl/processors/firstivwprocessor.h>
 #include <modules/basegl/processors/geometryentryexitpoints.h>
 #include <modules/basegl/processors/heightfieldprocessor.h>
+#include <modules/basegl/processors/imageprocessing/columnrowlayout.h>
 #include <modules/basegl/processors/imageprocessing/findedges.h>
 #include <modules/basegl/processors/imageprocessing/imagebinary.h>
 #include <modules/basegl/processors/imageprocessing/imagechannelcombine.h>
@@ -90,6 +91,7 @@
 #include <modules/basegl/processors/volumeslicegl.h>
 #include <modules/basegl/processors/volumeprocessing/volumeshader.h>
 #include <modules/basegl/properties/linesettingsproperty.h>
+#include <modules/basegl/properties/splitterproperty.h>
 #include <modules/basegl/properties/stipplingproperty.h>
 #include <modules/basegl/datavisualizer/volumeraycastvisualizer.h>
 #include <modules/basegl/datavisualizer/volumeslicevisualizer.h>
@@ -109,6 +111,7 @@ BaseGLModule::BaseGLModule(InviwoApplication* app) : InviwoModule(app, "BaseGL")
     basegl::addShaderResources(ShaderManager::getPtr(), {getPath(ModulePath::GLSL)});
 
     registerProperty<LineSettingsProperty>();
+    registerProperty<SplitterProperty>();
     registerProperty<StipplingProperty>();
 
     registerProcessor<AxisAlignedCutPlane>();
@@ -121,12 +124,7 @@ BaseGLModule::BaseGLModule(InviwoApplication* app) : InviwoModule(app, "BaseGL")
     registerProcessor<FirstIvwProcessor>();
     registerProcessor<GeometryEntryExitPoints>();
     registerProcessor<HeightFieldProcessor>();
-    registerProcessor<ImageCompositeProcessorGL>();
-    registerProcessor<ImageLayoutGL>();
-    registerProcessor<ImageMixer>();
-    registerProcessor<ImageOverlayGL>();
     registerProcessor<ISORaycaster>();
-    registerProcessor<Jacobian2D>();
     registerProcessor<LightingRaycaster>();
     registerProcessor<LightVolumeGL>();
     registerProcessor<LineRendererProcessor>();
@@ -137,28 +135,35 @@ BaseGLModule::BaseGLModule(InviwoApplication* app) : InviwoModule(app, "BaseGL")
     registerProcessor<PointRenderer>();
     registerProcessor<RedGreenProcessor>();
     registerProcessor<SphereRenderer>();
+    registerProcessor<SplitImage>();
     registerProcessor<TubeRendering>();
     registerProcessor<VolumeRaycaster>();
     registerProcessor<VolumeSliceGL>();
 
     // image processing
+    registerProcessor<ColumnLayout>();
     registerProcessor<FindEdges>();
     registerProcessor<ImageBinary>();
     registerProcessor<ImageChannelCombine>();
     registerProcessor<ImageChannelSelect>();
+    registerProcessor<ImageCompositeProcessorGL>();
     registerProcessor<ImageGamma>();
     registerProcessor<ImageGradient>();
     registerProcessor<ImageGrayscale>();
     registerProcessor<ImageHighPass>();
     registerProcessor<ImageInvert>();
     registerProcessor<ImageLayer>();
+    registerProcessor<ImageLayoutGL>();
     registerProcessor<ImageLowPass>();
     registerProcessor<ImageMapping>();
+    registerProcessor<ImageMixer>();
     registerProcessor<ImageNormalizationProcessor>();
+    registerProcessor<ImageOverlayGL>();
     registerProcessor<ImageResample>();
     registerProcessor<ImageScaling>();
     registerProcessor<ImageSubsetGL>();
-    registerProcessor<SplitImage>();
+    registerProcessor<Jacobian2D>();
+    registerProcessor<RowLayout>();
 
     // volume processing
     registerProcessor<VectorMagnitudeProcessor>();
@@ -182,7 +187,7 @@ BaseGLModule::BaseGLModule(InviwoApplication* app) : InviwoModule(app, "BaseGL")
     registerDataVisualizer(std::make_unique<MeshVisualizer>(app));
 }
 
-int BaseGLModule::getVersion() const { return 4; }
+int BaseGLModule::getVersion() const { return 5; }
 
 std::unique_ptr<VersionConverter> BaseGLModule::getConverter(int version) const {
     return std::make_unique<Converter>(version);
@@ -401,7 +406,19 @@ bool BaseGLModule::Converter::convert(TxElement* root) {
                  "radius",
                  "defaultRadius"}};
             res |= xml::changeIdentifiers(root, repl);
-
+            [[fallthrough]];
+        }
+        case 4: {
+            res |= xml::changeIdentifier(root,
+                                         {xml::Kind::processor("org.inviwo.SplitImage"),
+                                          xml::Kind::property("org.inviwo.BoolCompositeProperty"),
+                                          xml::Kind::property("org.inviwo.FloatVec4Property")},
+                                         "triColor", "hoverColor");
+            res |= xml::changeAttribute(root,
+                                        {{xml::Kind::processor("org.inviwo.SplitImage"),
+                                          xml::Kind::property("org.inviwo.BoolCompositeProperty")}},
+                                        "type", "org.inviwo.BoolCompositeProperty",
+                                        "org.inviwo.SplitterProperty");
             return res;
         }
 
