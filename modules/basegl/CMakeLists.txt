@@ -7,11 +7,13 @@ ivw_module(BaseGL)
 set(HEADER_FILES
     include/modules/basegl/algorithm/entryexitpoints.h
     include/modules/basegl/algorithm/imageconvolution.h
+    include/modules/basegl/algorithm/volumenormalization.h
     include/modules/basegl/baseglmodule.h
     include/modules/basegl/baseglmoduledefine.h
     include/modules/basegl/datastructures/linesettings.h
     include/modules/basegl/datastructures/linesettingsinterface.h
     include/modules/basegl/datastructures/meshshadercache.h
+    include/modules/basegl/datastructures/splittersettings.h
     include/modules/basegl/datastructures/stipplingsettings.h
     include/modules/basegl/datastructures/stipplingsettingsinterface.h
     include/modules/basegl/datavisualizer/imagebackgroundvisualizer.h
@@ -29,6 +31,7 @@ set(HEADER_FILES
     include/modules/basegl/processors/firstivwprocessor.h
     include/modules/basegl/processors/geometryentryexitpoints.h
     include/modules/basegl/processors/heightfieldprocessor.h
+    include/modules/basegl/processors/imageprocessing/columnrowlayout.h
     include/modules/basegl/processors/imageprocessing/findedges.h
     include/modules/basegl/processors/imageprocessing/imagebinary.h
     include/modules/basegl/processors/imageprocessing/imagechannelcombine.h
@@ -79,11 +82,13 @@ set(HEADER_FILES
     include/modules/basegl/processors/volumeprocessing/volumelowpass.h
     include/modules/basegl/processors/volumeprocessing/volumemapping.h
     include/modules/basegl/processors/volumeprocessing/volumemerger.h
+    include/modules/basegl/processors/volumeprocessing/volumenormalizationprocessor.h
     include/modules/basegl/processors/volumeprocessing/volumeregionshrink.h
     include/modules/basegl/processors/volumeprocessing/volumeshader.h
     include/modules/basegl/processors/volumeraycaster.h
     include/modules/basegl/processors/volumeslicegl.h
     include/modules/basegl/properties/linesettingsproperty.h
+    include/modules/basegl/properties/splitterproperty.h
     include/modules/basegl/properties/stipplingproperty.h
     include/modules/basegl/raycasting/atlascomponent.h
     include/modules/basegl/raycasting/backgroundcomponent.h
@@ -100,6 +105,7 @@ set(HEADER_FILES
     include/modules/basegl/raycasting/timecomponent.h
     include/modules/basegl/raycasting/volumecomponent.h
     include/modules/basegl/rendering/linerenderer.h
+    include/modules/basegl/rendering/splitterrenderer.h
     include/modules/basegl/viewmanager.h
 )
 ivw_group("Header Files" ${HEADER_FILES})
@@ -109,10 +115,12 @@ ivw_group("Header Files" ${HEADER_FILES})
 set(SOURCE_FILES
     src/algorithm/entryexitpoints.cpp
     src/algorithm/imageconvolution.cpp
+    src/algorithm/volumenormalization.cpp
     src/baseglmodule.cpp
     src/datastructures/linesettings.cpp
     src/datastructures/linesettingsinterface.cpp
     src/datastructures/meshshadercache.cpp
+    src/datastructures/splittersettings.cpp
     src/datastructures/stipplingsettings.cpp
     src/datastructures/stipplingsettingsinterface.cpp
     src/datavisualizer/imagebackgroundvisualizer.cpp
@@ -130,6 +138,7 @@ set(SOURCE_FILES
     src/processors/firstivwprocessor.cpp
     src/processors/geometryentryexitpoints.cpp
     src/processors/heightfieldprocessor.cpp
+    src/processors/imageprocessing/columnrowlayout.cpp
     src/processors/imageprocessing/findedges.cpp
     src/processors/imageprocessing/imagebinary.cpp
     src/processors/imageprocessing/imagechannelcombine.cpp
@@ -180,11 +189,13 @@ set(SOURCE_FILES
     src/processors/volumeprocessing/volumelowpass.cpp
     src/processors/volumeprocessing/volumemapping.cpp
     src/processors/volumeprocessing/volumemerger.cpp
+    src/processors/volumeprocessing/volumenormalizationprocessor.cpp
     src/processors/volumeprocessing/volumeregionshrink.cpp
     src/processors/volumeprocessing/volumeshader.cpp
     src/processors/volumeraycaster.cpp
     src/processors/volumeslicegl.cpp
     src/properties/linesettingsproperty.cpp
+    src/properties/splitterproperty.cpp
     src/properties/stipplingproperty.cpp
     src/raycasting/atlascomponent.cpp
     src/raycasting/backgroundcomponent.cpp
@@ -201,6 +212,7 @@ set(SOURCE_FILES
     src/raycasting/timecomponent.cpp
     src/raycasting/volumecomponent.cpp
     src/rendering/linerenderer.cpp
+    src/rendering/splitterrenderer.cpp
     src/viewmanager.cpp
 )
 ivw_group("Source Files" ${SOURCE_FILES})
@@ -257,7 +269,9 @@ set(SHADER_FILES
     glsl/sphereglyph.frag
     glsl/sphereglyph.geom
     glsl/sphereglyph.vert
+    glsl/splitter.geom
     glsl/splitter.vert
+    glsl/splittertriangle.geom
     glsl/tuberendering.frag
     glsl/tuberendering.geom
     glsl/tuberendering.vert
@@ -272,6 +286,7 @@ set(SHADER_FILES
     glsl/volume_mapping.frag
     glsl/volumegradientmagnitude.frag
     glsl/volumemerger.frag
+    glsl/volumenormalization.frag
     glsl/volumeslice.frag
 )
 ivw_group("Shader Files" ${SHADER_FILES})

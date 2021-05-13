@@ -27,27 +27,4 @@
  * 
  *********************************************************************************/
 
-#include "utils/structs.glsl"
-
-uniform GeometryParameters geometry;
-
-// initialize camera matrices with the identity matrix to enable default rendering
-// without any transformation, i.e. all lines in clip space
-uniform CameraParameters camera = CameraParameters( mat4(1), mat4(1), mat4(1), mat4(1),
-                                    mat4(1), mat4(1), vec3(0), 0, 1);
-
-uniform bool pickingEnabled = true; // disables color output
-uniform vec4 color = vec4(0, 0, 0, 1);
-uniform uint pickId;
-
-out vec4 worldPosition_;
-out vec4 vertexColor_;
-flat out uint pickID_;
- 
-void main() {
-    vertexColor_ = (pickingEnabled ? vec4(0) : color);
-
-    worldPosition_ = geometry.dataToWorld * in_Vertex;
-    gl_Position = camera.worldToClip * worldPosition_;
-    pickID_ = pickingEnabled ? pickId : 0;
-}
+void main() {}
