@@ -1,0 +1,21 @@
+﻿ivwbnl
+======
+
+.. automodule:: ivwbnl
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BrushingAction
+      BrushingAndLinkingInport
+      BrushingAndLinkingManager
+      BrushingAndLinkingOutport
+      BrushingModification
+      BrushingModifications
+      BrushingModificationsIterator
+      BrushingTarget
+      BrushingTargetsInvalidationLevel
+      IndexList
+   
